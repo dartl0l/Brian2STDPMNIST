@@ -50,7 +50,7 @@ def get_labeled_data(picklename, bTrain = True):
         # Get the data
         x = np.zeros((N, rows, cols), dtype=np.uint8)  # Initialize numpy array
         y = np.zeros((N, 1), dtype=np.uint8)  # Initialize numpy array
-        for i in xrange(N):
+        for i in range(N):
             if i % 1000 == 0:
                 print("i: %i" % i)
             x[i] = [[unpack('>B', images.read(1))[0] for unused_col in xrange(cols)]  for unused_row in xrange(rows) ]
@@ -74,7 +74,7 @@ def get_matrix_from_file(fileName):
     else:
         n_tgt = n_i
     readout = np.load(fileName)
-    print readout.shape, fileName
+    print(readout.shape, fileName)
     value_arr = np.zeros((n_src, n_tgt))
     if not readout.shape == (0,):
         value_arr[np.int32(readout[:,0]), np.int32(readout[:,1])] = readout[:,2]
@@ -82,14 +82,14 @@ def get_matrix_from_file(fileName):
 
 
 def save_connections(ending = ''):
-    print 'save connections'
+    print('save connections')
     for connName in save_conns:
         conn = connections[connName]
         connListSparse = zip(conn.i, conn.j, conn.w)
         np.save(data_path + 'weights/' + connName + ending, connListSparse)
 
 def save_theta(ending = ''):
-    print 'save theta'
+    print('save theta')
     for pop_name in population_names:
         np.save(data_path + 'weights/theta_' + pop_name + ending, neuron_groups[pop_name + 'e'].theta)
 
@@ -103,7 +103,7 @@ def normalize_weights():
             temp_conn = np.copy(connection)
             colSums = np.sum(temp_conn, axis = 0)
             colFactors = weight['ee_input']/colSums
-            for j in xrange(n_e):#
+            for j in range(n_e):#
                 temp_conn[:,j] *= colFactors[j]
             connections[connName].w = temp_conn[connections[connName].i, connections[connName].j]
 
@@ -119,8 +119,8 @@ def get_2d_input_weights():
     connMatrix[connections[name].i, connections[name].j] = connections[name].w
     weight_matrix = np.copy(connMatrix)
 
-    for i in xrange(n_e_sqrt):
-        for j in xrange(n_e_sqrt):
+    for i in range(n_e_sqrt):
+        for j in range(n_e_sqrt):
                 rearranged_weights[i*n_in_sqrt : (i+1)*n_in_sqrt, j*n_in_sqrt : (j+1)*n_in_sqrt] = \
                     weight_matrix[:, i + j*n_e_sqrt].reshape((n_in_sqrt, n_in_sqrt))
     return rearranged_weights
@@ -183,11 +183,11 @@ def get_new_assignments(result_monitor, input_numbers):
     assignments = np.zeros(n_e)
     input_nums = np.asarray(input_numbers)
     maximum_rate = [0] * n_e
-    for j in xrange(10):
+    for j in range(10):
         num_assignments = len(np.where(input_nums == j)[0])
         if num_assignments > 0:
             rate = np.sum(result_monitor[input_nums == j], axis = 0) / num_assignments
-        for i in xrange(n_e):
+        for i in range(n_e):
             if rate[i] > maximum_rate[i]:
                 maximum_rate[i] = rate[i]
                 assignments[i] = j
@@ -200,12 +200,12 @@ def get_new_assignments(result_monitor, input_numbers):
 start = time.time()
 training = get_labeled_data(MNIST_data_path + 'training')
 end = time.time()
-print 'time needed to load training set:', end - start
+print('time needed to load training set:', end - start)
 
 start = time.time()
 testing = get_labeled_data(MNIST_data_path + 'testing', bTrain = False)
 end = time.time()
-print 'time needed to load test set:', end - start
+print('time needed to load test set:', end - start)
 
 
 #------------------------------------------------------------------------------
