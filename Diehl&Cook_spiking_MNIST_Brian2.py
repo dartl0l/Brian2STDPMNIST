@@ -346,7 +346,7 @@ neuron_groups['i'] = b2.NeuronGroup(n_i*len(population_names), neuron_eqs_i, thr
 # create network population and recurrent connections
 #------------------------------------------------------------------------------
 for subgroup_n, name in enumerate(population_names):
-    print 'create neuron group', name
+    print('create neuron group', name)
 
     neuron_groups[name+'e'] = neuron_groups['e'][subgroup_n*n_e:(subgroup_n+1)*n_e]
     neuron_groups[name+'i'] = neuron_groups['i'][subgroup_n*n_i:(subgroup_n+1)*n_e]
@@ -358,7 +358,7 @@ for subgroup_n, name in enumerate(population_names):
     else:
         neuron_groups['e'].theta = np.ones((n_e)) * 20.0*b2.mV
 
-    print 'create recurrent connections'
+    print('create recurrent connections')
     for conn_type in recurrent_conn_names:
         connName = name+conn_type[0]+name+conn_type[1]
         weightMatrix = get_matrix_from_file(weight_path + '../random/' + connName + ending + '.npy')
@@ -375,7 +375,7 @@ for subgroup_n, name in enumerate(population_names):
         connections[connName].connect(True) # all-to-all connection
         connections[connName].w = weightMatrix[connections[connName].i, connections[connName].j]
 
-    print 'create monitors for', name
+    print('create monitors for', name)
     rate_monitors[name+'e'] = b2.PopulationRateMonitor(neuron_groups[name+'e'])
     rate_monitors[name+'i'] = b2.PopulationRateMonitor(neuron_groups[name+'i'])
     spike_counters[name+'e'] = b2.SpikeMonitor(neuron_groups[name+'e'])
@@ -394,7 +394,7 @@ for i,name in enumerate(input_population_names):
     rate_monitors[name+'e'] = b2.PopulationRateMonitor(input_groups[name+'e'])
 
 for name in input_connection_names:
-    print 'create connections between', name[0], 'and', name[1]
+    print('create connections between', name[0], 'and', name[1])
     for connType in input_conn_names:
         connName = name[0] + connType[0] + name[1] + connType[1]
         weightMatrix = get_matrix_from_file(weight_path + connName + ending + '.npy')
@@ -477,7 +477,7 @@ while j < (int(num_examples)):
             input_numbers[j] = training['y'][j%60000][0]
         outputNumbers[j,:] = get_recognized_number_ranking(assignments, result_monitor[j%update_interval,:])
         if j % 100 == 0 and j > 0:
-            print 'runs done:', j, 'of', int(num_examples)
+            print('runs done:', j, 'of', int(num_examples))
         if j % update_interval == 0 and j > 0:
             if do_plot_performance:
                 unused, performance = update_performance_plot(performance_monitor, performance, j, fig_performance)
