@@ -142,8 +142,8 @@ def plot_2d_input_weights(connections, n_input, n_e, fig_num, wmax_ee):
     return im2, fig
 
 
-def update_2d_input_weights(im, fig, n_input, n_e):
-    weights = get_2d_input_weights(n_input, n_e)
+def update_2d_input_weights(connections, im, fig, n_input, n_e):
+    weights = get_2d_input_weights(connections, n_input, n_e)
     im.set_array(weights)
     fig.canvas.draw()
     return im
@@ -476,7 +476,7 @@ while j < int(num_examples):
     if j % update_interval == 0 and j > 0:
         assignments = get_new_assignments(result_monitor[:], input_numbers[j-update_interval : j], n_e)
     if j % weight_update_interval == 0 and not test_mode:
-        update_2d_input_weights(input_weight_monitor, fig_weights, n_input, n_e)
+        update_2d_input_weights(connections, input_weight_monitor, fig_weights, n_input, n_e)
     if j % save_connections_interval == 0 and j > 0 and not test_mode:
         save_connections(str(j))
         save_theta(str(j))
